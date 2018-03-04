@@ -29,8 +29,23 @@ db = require('./db')(); //global hack
 var jwt = require('jsonwebtoken');
 var dotenv = require('dotenv').config(); //Needed for process.env.UNIQUE_KEY
 var port = 8080;
+var mongoose = require('mongoose');
 mongoose.connect(process.env.DB);
+var Schema = mongoose.Schema;
 
+var userSchema = new Schema({
+    name: String,
+    username: {type: String, required: true, index: { unique: true}}, 
+    password: {type: String, required: true, select: false}
+});
+
+
+var movieSchema = new Schema({
+    title:{type: String, required: true, unique: true},
+    year: {type: Number, min:1600, max:9999}, 
+    genre: ['Action','Adventure','Comedy','Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western'],
+    
+});
 
 var app = express();
 app.use(bodyParser.json());
