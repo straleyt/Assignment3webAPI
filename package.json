@@ -1,0 +1,31 @@
+{
+  "name": "ass3webapi",
+  "version": "1.0.0",
+  "description": "web api ass 3",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/straleyt/Assignment3webAPI.git"
+  },
+  "author": "Tegan Straley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/straleyt/Assignment3webAPI/issues"
+  },
+  "homepage": "https://github.com/straleyt/Assignment3webAPI#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "http": "0.0.0",
+    "jsonwebtoken": "^8.2.0",
+    "mongodb": "^3.0.3",
+    "mongoose": "^5.0.8",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1"
+  }
+}
