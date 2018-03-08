@@ -7,6 +7,7 @@ var dotenv = require('dotenv').config(); //Needed for process.env.UNIQUE_KEY
 var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
 opts.secretOrKey = process.env.SECRET_KEY;
+db = process.env.DB;//Links to either our mongo or mlab db
 
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
     //User.findById(jwt_payload) 
@@ -18,8 +19,6 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
             done(null, false);
         }
 }));
-
-
 
 exports.isAuthenticated = passport.authenticate('jwt', { session : false });
 exports.secret = opts.secretOrKey ;
