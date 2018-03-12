@@ -181,35 +181,37 @@ router.post('/movies/save', (req, res) => {
 //Read
 router.get('/movies/get', (req, res) => {
     console.log("Going to get a movie...");
-
-    if (!req.headers._id) {
-        res.json({success: false, msg: 'Please pass movie id.'});
-    } 
-    else { 
-         Movie.findById({ _id: req.headers._id }).select('_id').exec(function(err, movie) {
-            if (err) res.send(err);
-            console.log("id" + req.headers._id);
-            return res.status(200).json( movie.title);
-         });
-     }
+    var id = req.headers._id;
+    Movie.findById(id, function(err, movie) {
+      if (err) res.send(err);
+  
+      var userJson = JSON.stringify(movie);
+      // return that user
+      res.json(movie);
+    });
 });
 
 
 //Update    
 router.put('/movies/update', (req, res) => {
     console.log("Going to update a movie...");
-    if (!req.body._id) {
-        res.json({success: false, msg: 'Please pass movie id.'});
-    } 
-    else { 
-         Movie.findByIdAndUpdate({ _id: req.body._id }).select('_id').exec(function(err, movie) {
-             if (err) res.send(err);
-             res.json({success: true, msg: 'going to update... TODO.', movie: movie});
+    var id = req.headers._id;
+    Movie.findOne({_id: id}).exec(function(err, movie) {
+      if (err) res.send(err);
+        // update the users info only if its new
+        if (req.body.title) movie.title = req.body.title;
+        if (req.body.yearReleased) movie.yearReleased = req.body.yearReleased;
+        if (req.body.genre) movie.genre = req.body.genre;
+        if (req.body.actors) movie.actors = req.body.actors;
 
- 
- 
-         });
-     }
+        // save the user
+        movie.save(function (err) {
+            if (err) res.send(err);
+
+            // return a message
+            res.json({message: 'Movie updated!'});
+        });  
+    });
 });
 
 
