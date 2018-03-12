@@ -123,7 +123,7 @@ router.post('/signin', (req, res) => {
 });
 
 //~~~~~~Middle-route: Authentication~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-router.use((req, res, next) => { 
+router.use('/movies',(req, res, next) => { 
     //First must authenticate
     var token = req.headers['x-access-token'] || req.body.token || req.query.token; 
     var secretOrKey = process.env.SECRET_KEY;
