@@ -15,16 +15,25 @@
 
 //~~~~~~requires~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var express = require('express');
+var path = require('path');
 var http = require('http');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var authJwtController = require('./auth_jwt');
+//var schemas = require('./schemas')
 var jwt = require('jsonwebtoken');
 var dotenv = require('dotenv').config(); //Needed for process.env.UNIQUE_KEY
-var port = 8082;
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var Schema = mongoose.Schema;
+var port = 8082;
+var minAmountOfCharacters = 3;
+
+//~~~~~~set up server~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+var router = express.Router(); // get instance of router
 
 mongoose.connect(process.env.DB , (err, database) => {
     if (err) throw err;
@@ -32,7 +41,6 @@ mongoose.connect(process.env.DB , (err, database) => {
     db = database;
     console.log("Database connected on " + process.env.DB);
 });
-
 
 //~~~~~~USER schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var userSchema = new Schema({
@@ -59,39 +67,21 @@ userSchema.pre('save', function(next) {
     });
 });
 
-
-// userSchema.methods.comparePassword = function(password, callback) {
-//     var user = this;
-
-//     bcrypt.compare(password, user.password, function(err, isMatch) {
-//        callback(isMatch) ;
-//     });
-// };
-
-
-//~~~~~~ACTOR schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var actorSchema = new Schema({
-    name:{type: String, required: true},
-    characterName: {type: String, required: true}
-});
-var Actor = mongoose.model("Actor", actorSchema);
-
 //~~~~~~MOVIE schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function minLength(actors){
+    return actors.length >= 3;
+}
 var movieSchema = new Schema({
     title:{type: String, required: true, unique: true},
-    year: {type: Number, min:1600, max:9999}, 
+    yearReleased: {type: Number, min:1600, max:9999}, 
     genre: ['Action','Adventure','Comedy','Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western'],
-    actors: {type: actorSchema, min:3}
+    actors: {type:[
+        {name:{type: String, required: true},
+        characterName: {type: String, required: true}}]
+        ,validate:[minLength, "Must be a minimum of 3 actors"]}
 });
+var Movie = mongoose.model("Movie", movieSchema);
 
-
-
-//~~~~~~set up server~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-var router = express.Router();
 
 //~~~~~~signup and signin~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 router.post('/signup', (req, res) => {
@@ -118,46 +108,134 @@ router.post('/signin', (req, res) => {
     User.findOne({ username: userNew.username }).select('name username password').exec(function(err, user) {
         if (err) res.send(err);
 
-        console.log("userNew pass : "+ userNew.password);
-        console.log("user pass : "+ user.password);
-
-
-        // generate the hash
-        bcrypt.hash(userNew.password, null, null, function(err, hash) {
-            if (err) return next(err);
-
-             // change the password to the hashed version
-            userNew.password = hash;
-           
-            console.log("AFTERuserNew pass : "+ userNew.password);
-            console.log("AFTERuser pass : "+ user.password);
-    
-            //or do comparePassword thru user, however js is asynchronous so doesn't get back in time?
-            bcrypt.compare(userNew.password, user.password, (err, isMatch) => {
-                if (isMatch) {
-                    var userToken = {id: user._id, username: user.username};
-                    var token = jwt.sign(userToken, process.env.SECRET_KEY);
-                    res.json({success: true, token: 'JWT ' + token});
-                }
-                else {
-                    res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
-                }
-             });
+        //bcrypt compares unhashed password and saved hashed password 
+        bcrypt.compare(userNew.password, user.password, (err, isMatch) => {
+            if (isMatch) {
+                var userToken = {id: user._id, username: user.username};
+                var token = jwt.sign(userToken, process.env.SECRET_KEY);
+                res.json({success: true, message: 'Enjoy the jwt token!', token: token});
+            }
+            else {
+                res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+            }
         });
     });
 });
 
-//~~~~~~/movies routes~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-router.route('/movies')
-    .post(authJwtController.isAuthenticated, (req, res) => {
-            console.log(req.body);
-            res = res.status(200);
-            if (req.get('Content-Type')) {
-                console.log("Content-Type: " + req.get('Content-Type'));
-                res = res.type(req.get('Content-Type'));
+//~~~~~~Middle-route: Authentication~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+router.use((req, res, next) => { 
+    //First must authenticate
+    var token = req.headers['x-access-token'] || req.body.token || req.query.token; 
+    var secretOrKey = process.env.SECRET_KEY;
+    //console.log("Token:  " + token);
+    if (token != null) { 
+        jwt.verify(token, secretOrKey, function(err, decoded) { 
+            if (err) { 
+                return res.status(403).send({ 
+                    success: false, 
+                    message: 'Failed to authenticate token.' 
+                });
+            } else { 
+                console.log("User authenticated.");
+                req.decoded = decoded;
+                next();
             }
-            res.send(req.body);
-    });
+        });
+    } else {
+        return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+        });
+    }
+});
+
+//~~~~~~/movies CRUD (Create, Read, Update, Delete)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//Create
+router.post('/movies/save', (req, res) => {
+
+    console.log("Going to save a movie...");
+
+    //Needs title, yearReleased, genre, >= 3 actorName, >= 3 actorCharacterName
+    if (    !req.body.title
+         || !req.body.yearReleased
+         || !req.body.genre 
+         || !req.body.actors
+        ) {
+        res.json({success: false, msg: 'Please pass title, yearReleased, genre, actors.'});
+    } 
+    else { 
+        var newMovie = new Movie(req.body)
+        // save the user
+        newMovie.save()
+            .then(item => {
+                res.json({success: true, msg: 'Successful created new movie.'});
+            })
+            .catch(err => {
+                res.status(422).send("Unable to save movie to database");
+            });
+    }
+});
+
+
+//Read
+router.get('/movies/get', (req, res) => {
+    console.log("Going to get a movie...");
+
+    if (!req.headers._id) {
+        res.json({success: false, msg: 'Please pass movie id.'});
+    } 
+    else { 
+         Movie.findById({ _id: req.headers._id }).select('_id').exec(function(err, movie) {
+            if (err) res.send(err);
+            console.log("id" + req.headers._id);
+            return res.status(200).json( movie.title);
+         });
+     }
+});
+
+
+//Update    
+router.put('/movies/update', (req, res) => {
+    console.log("Going to update a movie...");
+    if (!req.body._id) {
+        res.json({success: false, msg: 'Please pass movie id.'});
+    } 
+    else { 
+         Movie.findByIdAndUpdate({ _id: req.body._id }).select('_id').exec(function(err, movie) {
+             if (err) res.send(err);
+             res.json({success: true, msg: 'going to update... TODO.', movie: movie});
+
+ 
+ 
+         });
+     }
+});
+
+
+//Delete
+router.delete('/movies/delete', (req, res) => {
+    console.log("Going to delete a movie...");
+    if (!req.body._id) {
+       res.json({success: false, msg: 'Please pass movie id.'});
+   } 
+   else { 
+        Movie.findOne({ _id: req.body._id }).select('_id').exec(function(err, movie) {
+            if (err) res.send(err);
+        
+             movie.remove()
+            .then(item => {
+                res.json({success: true, msg: 'Successful removed movie.'});
+             })
+            .catch(err => {
+                res.status(422).send("Unable to remove movie from database");
+            });
+
+
+        });
+    }
+});
+
 
 
 
@@ -167,20 +245,6 @@ router.route('/movies')
 // router.route('*', function(req, res, next) {
 //     res.status(405).send({message:"Unsupported method or invalid path."});
 //   });
-  
-
-router.route('/postjwt')
-    .post(authJwtController.isAuthenticated, function (req, res) {
-            console.log(req.body);
-            res = res.status(200);
-            if (req.get('Content-Type')) {
-                console.log("Content-Type: " + req.get('Content-Type'));
-                res = res.type(req.get('Content-Type'));
-            }
-            res.send(req.body);
-        }
-    );
-
 
 
 app.use('/', router);
