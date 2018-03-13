@@ -191,6 +191,14 @@ router.get('/movies/get', (req, res) => {
     });
 });
 
+//Get all
+router.get('/movies/getall', (req, res) => {
+    Movie.find(function (err, movies) {
+        if (err) res.send(err);
+        // return the users
+        res.json(movies);
+      });
+});
 
 //Update    
 router.put('/movies/update', (req, res) => {
