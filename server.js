@@ -231,15 +231,9 @@ router.delete('/movies/delete', (req, res) => {
             .catch(err => {
                 res.status(422).send("Unable to remove movie from database");
             });
-
-
         });
     }
 });
-
-
-
-
 
 
 //~~~~~~everything else~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
