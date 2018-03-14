@@ -1,17 +1,8 @@
-// singup POST
-// singin POST
-//get all GET
-// save new POST
-//get specific GET
-//save exisiting PUT
-//delete specific DELETE
-//in class
-
-//sin up, signing, posts, all errors messages
-
-//but with movies! singup signin users
-//then movies update, etc. 
-
+//Tegan Straley
+//Assignment 3 Web API
+//
+//users: signin and signup
+//movies: CRUD (save, get, update, delete), getall
 
 //~~~~~~requires~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var express = require('express');
@@ -86,7 +77,7 @@ var Movie = mongoose.model("Movie", movieSchema);
 //~~~~~~signup and signin~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 router.post('/signup', (req, res) => {
     if (!req.body.username || !req.body.password || !req.body.name) {
-        res.json({success: false, msg: 'Please pass username, name, and password.'});
+        res.status(422).json({success: false, msg: 'Please pass username, name, and password.'});
     } else {
         var newUser = new User(req.body);
         
