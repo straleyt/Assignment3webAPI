@@ -59,13 +59,27 @@ userSchema.pre('save', function(next) {
 });
 
 //~~~~~~MOVIE schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+var genreEnum = { //genre enumeration
+    ACTION: "action", 
+    ADVENTURE: "adventure",
+    COMEDY: "comedy", 
+    DRAMA: "drama",
+    FANTASY: "fantasy", 
+    HORROR: "horror",
+    MYSTERY: "myster", 
+    THRILLER: "thriller",
+    WESTERN: "western"
+}
+
 function minLength(actors){
     return actors.length >= 3;
 }
+
 var movieSchema = new Schema({
     title:{type: String, required: true, unique: true},
     yearReleased: {type: Number, min:1600, max:9999}, 
-    genre: ['Action','Adventure','Comedy','Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western'],
+    genre: genreEnum,
     actors: {type:[
         {name:{type: String, required: true},
         characterName: {type: String, required: true}}]
