@@ -15,6 +15,7 @@ var jwt = require('jsonwebtoken');
 var dotenv = require('dotenv').config(); //Needed for process.env.UNIQUE_KEY
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var async = require('async'); //Added for reviews for assignment 4
 var Schema = mongoose.Schema;
 var port = 8082;
 var minAmountOfCharacters = 3;
@@ -59,15 +60,14 @@ userSchema.pre('save', function(next) {
 });
 
 //~~~~~~MOVIE schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 function minLength(actors){
     return actors.length >= 3;
 }
 
 var movieSchema = new Schema({
-    title:{type: String, required: true, unique: true},
+    title: {type: String, required: true, unique: true},
     yearReleased: {type: Number, min:1600, max:9999}, 
-    genre:{type: String, required: true, enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western']},
+    genre: {type: String, required: true, enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western']},
     actors: {type:[
         {name:{type: String, required: true},
         characterName: {type: String, required: true}}]
@@ -75,6 +75,13 @@ var movieSchema = new Schema({
 });
 var Movie = mongoose.model("Movie", movieSchema);
 
+//~~~~~~REVIEW schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var reviewSchema = new Schema({
+    reviewer: {type: String, required:true},
+    quote: {type: String, required:true},
+    rating: {type: Number, min:1, max:5, required:true}
+});
+var Review = mongoose.model("Review", reviewSchema);
 
 //~~~~~~signup and signin~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 router.post('/signup', (req, res) => {

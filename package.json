@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/straleyt/Assignment3webAPI#readme",
   "dependencies": {
+    "async": "^2.6.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "dotenv": "^5.0.1",
