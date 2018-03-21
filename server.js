@@ -60,18 +60,6 @@ userSchema.pre('save', function(next) {
 
 //~~~~~~MOVIE schema~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-var genreEnum = { //genre enumeration
-    ACTION: "action", 
-    ADVENTURE: "adventure",
-    COMEDY: "comedy", 
-    DRAMA: "drama",
-    FANTASY: "fantasy", 
-    HORROR: "horror",
-    MYSTERY: "myster", 
-    THRILLER: "thriller",
-    WESTERN: "western"
-}
-
 function minLength(actors){
     return actors.length >= 3;
 }
@@ -79,7 +67,7 @@ function minLength(actors){
 var movieSchema = new Schema({
     title:{type: String, required: true, unique: true},
     yearReleased: {type: Number, min:1600, max:9999}, 
-    genre: genreEnum,
+    genre:{type: String, required: true, enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western']},
     actors: {type:[
         {name:{type: String, required: true},
         characterName: {type: String, required: true}}]
