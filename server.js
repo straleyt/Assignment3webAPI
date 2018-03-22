@@ -149,6 +149,32 @@ router.use('/movies',(req, res, next) => {
     }
 });
 
+router.use('/reviews',(req, res, next) => { 
+    //First must authenticate
+    var token = req.headers['x-access-token'] || req.body.token || req.query.token; 
+    var secretOrKey = process.env.SECRET_KEY;
+    //console.log("Token:  " + token);
+    if (token != null) { 
+        jwt.verify(token, secretOrKey, function(err, decoded) { 
+            if (err) { 
+                return res.status(403).send({ 
+                    success: false, 
+                    message: 'Failed to authenticate token.' 
+                });
+            } else { 
+                console.log("User authenticated.");
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+        });
+    }
+});
+
 //~~~~~~/movies CRUD (Create, Read, Update, Delete)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //Create
@@ -244,7 +270,55 @@ router.delete('/movies/delete', (req, res) => {
     }
 });
 
+//~~~~~~Review (POST and GET)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Create
+router.post('/reviews/save', (req, res) => {
 
+    console.log("Going to save a movie...");
+
+    //Needs title, yearReleased, genre, >= 3 actorName, >= 3 actorCharacterName
+    if (    !req.body.reviewer
+         || !req.body.quote
+         || !req.body.rating 
+         || !req.body._id
+        ) {
+        res.json({success: false, msg: 'Please pass reviewer, quote, rating, and movie id.'});
+    } 
+    else { 
+        var newReview = new Review(req.body)
+        // save the user
+        newReview.save()
+            .then(item => {
+                res.json({success: true, msg: 'Successful created new review.'});
+            })
+            .catch(err => {
+                res.status(422).send("Unable to save review to database");
+            });
+    }
+});
+
+
+//Read
+router.get('/reviews/get', (req, res) => {
+    console.log("Going to get a review...");
+    var id = req.headers._id;
+    Review.findById(id, function(err, review) {
+      if (err) res.send(err);
+  
+      var userJson = JSON.stringify(review);
+      // return that user
+      res.json(review);
+    });
+});
+
+//Get all
+router.get('/reviews/getall', (req, res) => {
+    Review.find(function (err, reviews) {
+        if (err) res.send(err);
+        // return the users
+        res.json(reviews);
+      });
+});
 //~~~~~~everything else~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // router.route('*', function(req, res, next) {
 //     res.status(405).send({message:"Unsupported method or invalid path."});
