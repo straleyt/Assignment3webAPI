@@ -280,7 +280,7 @@ router.post('/reviews/save', (req, res) => {
     if (    !req.body.reviewer
          || !req.body.quote
          || !req.body.rating 
-         || !req.body._id
+         || !req.body.movieid
         ) {
         res.json({success: false, msg: 'Please pass reviewer, quote, rating, and movie id.'});
     } 
