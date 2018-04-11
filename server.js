@@ -16,6 +16,7 @@ var dotenv = require('dotenv').config(); //Needed for process.env.UNIQUE_KEY
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async'); //Added for reviews for assignment 4
+var cors = require('cors');
 var Schema = mongoose.Schema;
 var port = 8082;
 var minAmountOfCharacters = 3;
@@ -25,6 +26,8 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
+app.use(cors()); //To link assignment3 to assignment5
+
 var router = express.Router(); // get instance of router
 
 mongoose.connect(process.env.DB, (err, database) => {
