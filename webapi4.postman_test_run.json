@@ -1,0 +1,556 @@
+{
+	"id": "d6df392d-6b0b-4ab8-b32a-ecf5c4573d8e",
+	"name": "webapi4",
+	"allTests": [],
+	"timestamp": "2018-03-22T20:00:59.547Z",
+	"collection_id": "21170f0d-2dfa-4703-a501-c1a49c206b11",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "fac68a82-2045-ce93-5c71-955861f7f68b",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "21170f0d-2dfa-4703-a501-c1a49c206b11",
+		"name": "webapi4",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"variables": [],
+		"order": [
+			"8ea91947-bae3-47fe-9c1b-4b93eb7b3ec2",
+			"d8a0b040-2f8c-4425-ab0e-1ee7b4647185",
+			"6a800642-4bb5-40d3-95c7-0bf118cc5ff0",
+			"bc2b813b-656f-4049-acda-77096c80fd65",
+			"0ac5a176-d355-4570-9816-c37a47b3f29a",
+			"98331efa-f022-42bb-ab81-b27dce715ded",
+			"c273c627-de3b-4cab-9608-350efbc0af07",
+			"9db543c6-0d17-422f-acbb-121166ffb616",
+			"e16359e3-1a20-4073-9a1d-314b63f6d0ae"
+		],
+		"folders_order": [],
+		"owner": "2793397",
+		"permissions": {},
+		"favorite": true,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"name": "save review (correct)",
+			"id": "8ea91947-bae3-47fe-9c1b-4b93eb7b3ec2",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 200",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"97"
+			],
+			"allTests": [
+				{
+					"Status Code is 200": true
+				}
+			],
+			"time": "97",
+			"totalRequestTime": "97",
+			"iterationResults": {}
+		},
+		{
+			"name": "save review (wrong, movie not in DB)",
+			"id": "d8a0b040-2f8c-4425-ab0e-1ee7b4647185",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity",
+				"detail": {
+					"name": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"detail": "The request was well-formed but was unable to be followed due to semantic errors."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 422",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 422": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"82"
+			],
+			"allTests": [
+				{
+					"Status Code is 422": true
+				}
+			],
+			"time": "82",
+			"totalRequestTime": "82",
+			"iterationResults": {}
+		},
+		{
+			"name": "save review (wrong, rating)",
+			"id": "6a800642-4bb5-40d3-95c7-0bf118cc5ff0",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity",
+				"detail": {
+					"name": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"detail": "The request was well-formed but was unable to be followed due to semantic errors."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 422",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 422": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"75"
+			],
+			"allTests": [
+				{
+					"Status Code is 422": true
+				}
+			],
+			"time": "75",
+			"totalRequestTime": "75",
+			"iterationResults": {}
+		},
+		{
+			"name": "save review (wrong, no movie title)",
+			"id": "bc2b813b-656f-4049-acda-77096c80fd65",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Missing  reviewer, quote, rating, or movie title.",
+				"status": "pass",
+				"Status Code is 200": true
+			},
+			"testPassFailCounts": {
+				"Missing  reviewer, quote, rating, or movie title.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"76"
+			],
+			"allTests": [
+				{
+					"Missing  reviewer, quote, rating, or movie title.": true,
+					"Status Code is 200": true
+				}
+			],
+			"time": "76",
+			"totalRequestTime": "76",
+			"iterationResults": {}
+		},
+		{
+			"name": "movies/get (correct,review=true)",
+			"id": "0ac5a176-d355-4570-9816-c37a47b3f29a",
+			"url": "https://web-api-assignment3.herokuapp.com/movies/get",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 200",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"97"
+			],
+			"allTests": [
+				{
+					"Status Code is 200": true
+				}
+			],
+			"time": "97",
+			"totalRequestTime": "97",
+			"iterationResults": {}
+		},
+		{
+			"name": "movies/get  (correct,review=false)",
+			"id": "98331efa-f022-42bb-ab81-b27dce715ded",
+			"url": "https://web-api-assignment3.herokuapp.com/movies/get",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 200",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"97"
+			],
+			"allTests": [
+				{
+					"Status Code is 200": true
+				}
+			],
+			"time": "97",
+			"totalRequestTime": "97",
+			"iterationResults": {}
+		},
+		{
+			"name": "reviews/getall (correct)",
+			"id": "c273c627-de3b-4cab-9608-350efbc0af07",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/getall",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 200",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"82"
+			],
+			"allTests": [
+				{
+					"Status Code is 200": true
+				}
+			],
+			"time": "82",
+			"totalRequestTime": "82",
+			"iterationResults": {}
+		},
+		{
+			"name": "reviews/get (correct)",
+			"id": "9db543c6-0d17-422f-acbb-121166ffb616",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/get",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 200",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"74"
+			],
+			"allTests": [
+				{
+					"Status Code is 200": true
+				}
+			],
+			"time": "74",
+			"totalRequestTime": "74",
+			"iterationResults": {}
+		},
+		{
+			"name": "reviews/delete (correct)",
+			"id": "e16359e3-1a20-4073-9a1d-314b63f6d0ae",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/delete",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status Code is 200",
+				"status": "pass"
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"74"
+			],
+			"allTests": [
+				{
+					"Status Code is 200": true
+				}
+			],
+			"time": "74",
+			"totalRequestTime": "74",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 10,
+	"totalFail": 0,
+	"totalTime": 754,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "save review (correct)",
+			"id": "8ea91947-bae3-47fe-9c1b-4b93eb7b3ec2",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "save review (wrong, movie not in DB)",
+			"id": "d8a0b040-2f8c-4425-ab0e-1ee7b4647185",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity",
+				"detail": {
+					"name": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"detail": "The request was well-formed but was unable to be followed due to semantic errors."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 422": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "save review (wrong, rating)",
+			"id": "6a800642-4bb5-40d3-95c7-0bf118cc5ff0",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity",
+				"detail": {
+					"name": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"detail": "The request was well-formed but was unable to be followed due to semantic errors."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 422": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "save review (wrong, no movie title)",
+			"id": "bc2b813b-656f-4049-acda-77096c80fd65",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/save",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Missing  reviewer, quote, rating, or movie title.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "movies/get (correct,review=true)",
+			"id": "0ac5a176-d355-4570-9816-c37a47b3f29a",
+			"url": "https://web-api-assignment3.herokuapp.com/movies/get",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "movies/get  (correct,review=false)",
+			"id": "98331efa-f022-42bb-ab81-b27dce715ded",
+			"url": "https://web-api-assignment3.herokuapp.com/movies/get",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "reviews/getall (correct)",
+			"id": "c273c627-de3b-4cab-9608-350efbc0af07",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/getall",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "reviews/get (correct)",
+			"id": "9db543c6-0d17-422f-acbb-121166ffb616",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/get",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "reviews/delete (correct)",
+			"id": "e16359e3-1a20-4073-9a1d-314b63f6d0ae",
+			"url": "https://web-api-assignment3.herokuapp.com/reviews/delete",
+			"time": "2018-03-22T20:00:59.547Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status Code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		}
+	],
+	"synced": false
+}
