@@ -213,10 +213,10 @@ router.post('/movies/save', (req, res) => {
 
 
 //Read
-router.get('/movies/get', (req, res) => {
+router.get('/:movieId', (req, res) => {
     console.log("Going to get a movie...");
-    var id = req.headers._id;
-    var reviewOption = req.headers.review;
+    var id = req.params.movieId;
+    var reviewOption = req.params.review;
     Movie.findById(id, function (err, movie) {
         if (err) res.send(err);
         if (reviewOption == "false"){
