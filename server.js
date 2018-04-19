@@ -92,7 +92,7 @@ var reviewSchema = new Schema({
 var Review = mongoose.model("Review", reviewSchema);
 
 //~~~~~~signup and signin~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-router.post('/signup', (req, res) => {
+router.post('//signup', (req, res) => {
     if (!req.body.username || !req.body.password || !req.body.name) {
         res.status(422).json({ success: false, msg: 'Please pass username, name, and password.' });
     } else {
@@ -110,7 +110,7 @@ router.post('/signup', (req, res) => {
 });
 
 
-router.post('/signin', (req, res) => {
+router.post('//signin', (req, res) => {
     var userNew = new User(req.body);
 
     User.findOne({ username: userNew.username }).select('name username password').exec(function (err, user) {
