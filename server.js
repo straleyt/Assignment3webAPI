@@ -213,7 +213,7 @@ router.post('/movies/save', (req, res) => {
 
 
 //Read
-router.get('/:movieId', (req, res) => {
+router.get('/movies/:movieId', (req, res) => {
     console.log("Going to get a movie...");
     var id = req.params.movieId;
     var reviewOption = req.params.review;
