@@ -131,57 +131,57 @@ router.post('/signin', (req, res) => {
 });
 
 //~~~~~~Middle-route: Authentication~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// router.use('/movies', (req, res, next) => {
-//     //First must authenticate
-//     var token = req.headers['x-access-token'] || req.body.token || req.query.token;
-//     var secretOrKey = process.env.SECRET_KEY;
-//     //console.log("Token:  " + token);
-//     if (token != null) {
-//         jwt.verify(token, secretOrKey, function (err, decoded) {
-//             if (err) {
-//                 return res.status(403).send({
-//                     success: false,
-//                     message: 'Failed to authenticate token.'
-//                 });
-//             } else {
-//                 console.log("User authenticated.");
-//                 req.decoded = decoded;
-//                 next();
-//             }
-//         });
-//     } else {
-//         return res.status(403).send({
-//             success: false,
-//             message: 'No token provided.'
-//         });
-//     }
-// });
+router.use('/movies', (req, res, next) => {
+    //First must authenticate
+    var token = req.headers['x-access-token'] || req.body.token || req.query.token;
+    var secretOrKey = process.env.SECRET_KEY;
+    //console.log("Token:  " + token);
+    if (token != null) {
+        jwt.verify(token, secretOrKey, function (err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: 'Failed to authenticate token.'
+                });
+            } else {
+                console.log("User authenticated.");
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+    }
+});
 
-// router.use('/reviews', (req, res, next) => {
-//     //First must authenticate
-//     var token = req.headers['x-access-token'] || req.body.token || req.query.token;
-//     var secretOrKey = process.env.SECRET_KEY;
-//     //console.log("Token:  " + token);
-//     if (token != null) {
-//         jwt.verify(token, secretOrKey, function (err, decoded) {
-//             if (err) {
-//                 return res.status(403).send({
-//                     success: false,
-//                     message: 'Failed to authenticate token.'
-//                 });
-//             } else {
-//                 console.log("User authenticated.");
-//                 req.decoded = decoded;
-//                 next();
-//             }
-//         });
-//     } else {
-//         return res.status(403).send({
-//             success: false,
-//             message: 'No token provided.'
-//         });
-//     }
-// });
+router.use('/reviews', (req, res, next) => {
+    //First must authenticate
+    var token = req.headers['x-access-token'] || req.body.token || req.query.token;
+    var secretOrKey = process.env.SECRET_KEY;
+    //console.log("Token:  " + token);
+    if (token != null) {
+        jwt.verify(token, secretOrKey, function (err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: 'Failed to authenticate token.'
+                });
+            } else {
+                console.log("User authenticated.");
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+    }
+});
 
 //~~~~~~/movies CRUD (Create, Read, Update, Delete)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
